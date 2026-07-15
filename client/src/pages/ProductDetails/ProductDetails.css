@@ -1,0 +1,112 @@
+.product-size-section {
+  display: block;
+  width: 100%;
+  margin: 30px 0;
+}
+
+.product-option-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 550px;
+  margin-bottom: 15px;
+}
+
+.product-option-title h3 {
+  color: #321820;
+  font-family: Georgia, serif;
+  font-size: 20px;
+}
+
+.product-option-title span {
+  color: #9b1c3f;
+  font-size: 14px;
+}
+
+.product-size-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.size-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 55px;
+  height: 50px;
+
+  border: 1px solid #cdb8b0;
+  background: #ffffff;
+  color: #321820;
+
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.size-button.size-active {
+  background: #321820;
+  color: #ffffff;
+  border-color: #321820;
+}
+
+.product-quantity-section {
+  display: block;
+  margin: 30px 0;
+}
+
+.product-quantity-section h3 {
+  color: #321820;
+  font-family: Georgia, serif;
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+.product-quantity-box {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  border: 1px solid #cdb8b0;
+}
+
+.product-quantity-box button {
+  width: 45px;
+  height: 45px;
+  border: none;
+  background: white;
+  color: #321820;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.product-quantity-box span {
+  width: 50px;
+  text-align: center;
+  font-weight: 700;
+  color: #321820;
+}
+
+.product-whatsapp-button {
+  width: 100%;
+  max-width: 550px;
+  padding: 18px;
+  margin-top: 15px;
+
+  border: none;
+  background: #25d366;
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  font-weight: 700;
+  letter-spacing: 2px;
+  cursor: pointer;
+}
+
+.product-whatsapp-button:hover {
+  background: #128c7e;
+}
