@@ -1,12 +1,18 @@
 import "./FeaturedProducts.css";
 import { useNavigate } from "react-router-dom";
 import products from "../../data/products";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { useWishlist } from "../../context/WishlistContext";
 
 function FeaturedProducts() {
   const navigate = useNavigate();
+  const { toggleWishlist, isWishlisted } = useWishlist();
 
   return (
-    <section className="featured">
+    <section
+      className="featured"
+      id="featured-products"
+    >
       <div className="featured-title">
         <p>MUKTA COLLECTIONS</p>
         <h2>Featured Products</h2>
@@ -15,13 +21,31 @@ function FeaturedProducts() {
 
       <div className="featured-grid">
         {products.map((product) => (
+          
           <div
             key={product.id}
             className="product-card"
             onClick={() => navigate(`/product/${product.id}`)}
           >
             <div className="product-image">
-              <img src={product.image} alt={product.name} />
+               <button
+                className="wishlist-btn"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleWishlist(product);
+                }}
+              >
+                {isWishlisted(product.id) ? (
+                  <FaHeart />
+                ) : (
+                  <FaRegHeart />
+                )}
+              </button>
+
+              <img
+                src={product.image}
+                alt={product.name}
+              />
 
               <span className="badge">
                 {product.discount || "NEW"}
@@ -38,17 +62,24 @@ function FeaturedProducts() {
               </button>
             </div>
 
+            {/* INFO */}
+
             <div className="product-info">
               <h3>{product.name}</h3>
 
               <div className="price">
-                <span>₹{product.price}</span>
+                <span>
+                  ₹{product.price}
+                </span>
 
                 {product.oldPrice && (
-                  <del>₹{product.oldPrice}</del>
+                  <del>
+                    ₹{product.oldPrice}
+                  </del>
                 )}
               </div>
             </div>
+
           </div>
         ))}
       </div>

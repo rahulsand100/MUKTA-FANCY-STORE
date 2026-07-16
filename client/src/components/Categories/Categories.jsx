@@ -48,9 +48,17 @@ function Categories() {
           <div
             className="category-card"
             key={category.id}
-            onClick={() =>
-              navigate(`/category/${category.path}`)
-            }
+          onClick={() => {
+  navigate("/");
+
+  setTimeout(() => {
+    document
+      .getElementById("featured-products")
+      ?.scrollIntoView({
+        behavior: "smooth",
+      });
+  }, 100);
+}}
           >
             <img
               src={category.image}

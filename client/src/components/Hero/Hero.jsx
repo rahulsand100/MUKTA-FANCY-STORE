@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import saree1 from "../../assets/hero/saree1.webp";
 import saree2 from "../../assets/hero/saree2.webp";
 import kurti2 from "../../assets/hero/Kurti2.jpg";
+
 const slides = [
   {
     image: saree1,
@@ -45,6 +46,10 @@ function Hero() {
   }, []);
 
   return (
+    <>
+    <div>
+
+    </div>
     <section className="relative bg-[#fff8f5] overflow-hidden">
       <div className="max-w-7xl mx-auto grid lg:grid-cols-2 min-h-[calc(100vh-180px)]">
 
@@ -100,7 +105,7 @@ function Hero() {
         ))}
       </div>
     </section>
-  );
+  </>);
 }
 
 export default Hero;

@@ -1,7 +1,10 @@
 import { useCart } from "../../context/CartContext";
+
 import "./Cart.css";
 
 function Cart() {
+  console.log("Cart Rendered");
+
   const {
     cart,
     cartTotal,
@@ -12,6 +15,8 @@ function Cart() {
     setIsCartOpen,
   } = useCart();
 
+console.log("Cart Rendered");
+console.log("isCartOpen:", isCartOpen);
   const handleWhatsAppOrder = () => {
     if (cart.length === 0) {
       alert("Your cart is empty.");
@@ -60,6 +65,8 @@ Please confirm my order.
 
   return (
     <>
+  
+      
       {isCartOpen && (
         <div
           className="cart-overlay"

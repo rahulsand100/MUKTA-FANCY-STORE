@@ -109,9 +109,9 @@ Please confirm my order.
         </div>
 
         <div className="product-details-info">
-          <p className="product-details-category">
-            MUKTA {product.category}
-          </p>
+         <p className="product-details-category">
+  MUKTA COLLECTION
+</p>
 
           <h1>{product.name}</h1>
 
@@ -139,9 +139,11 @@ Please confirm my order.
             )}
           </div>
 
-          <p className="product-details-description">
-            {product.description}
-          </p>
+         <p className="product-details-description">
+  Premium quality fabric with modern styling.
+  Comfortable for daily wear, parties and festive occasions.
+  Carefully selected by Mukta Fancy Store.
+</p>
 
           {/* SIZE */}
 
@@ -207,6 +209,45 @@ Please confirm my order.
             <p>✓ Easy WhatsApp ordering</p>
             <p>✓ Carefully packed with love</p>
           </div>
+          <div className="product-trust">
+
+  <div className="trust-card">
+    <span>🚚</span>
+
+    <div>
+      <h4>Fast Delivery</h4>
+      <p>Delivery available across India.</p>
+    </div>
+  </div>
+
+  <div className="trust-card">
+    <span>🔒</span>
+
+    <div>
+      <h4>Secure Ordering</h4>
+      <p>Safe ordering through WhatsApp.</p>
+    </div>
+  </div>
+
+  <div className="trust-card">
+    <span>💎</span>
+
+    <div>
+      <h4>Premium Quality</h4>
+      <p>Every product is quality checked.</p>
+    </div>
+  </div>
+
+  <div className="trust-card">
+    <span>🎁</span>
+
+    <div>
+      <h4>Gift Ready</h4>
+      <p>Perfect for festivals and special occasions.</p>
+    </div>
+  </div>
+
+</div>
 
           <button
             type="button"

@@ -1,5 +1,6 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { useWishlist } from "../../context/WishlistContext";
 import {
   FaHeart,
   FaShoppingCart,
@@ -10,24 +11,69 @@ import { useCart } from "../../context/CartContext";
 import Search from "../Search/Search";
 
 function Navbar() {
-  const { cartCount, setIsCartOpen } = useCart();
+ const { cartCount, setIsCartOpen } = useCart();
 
+const {
+  wishlistCount,
+  setIsWishlistOpen,
+} = useWishlist();
   const navigate = useNavigate();
+
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [showNavbar, setShowNavbar] = useState(true);
+
+  useEffect(() => {
+    let lastScroll = window.scrollY;
+
+    const handleScroll = () => {
+      const currentScroll = window.scrollY;
+
+      // Shrink Navbar
+      setIsScrolled(currentScroll > 50);
+
+      // Hide on scroll down
+      if (currentScroll > lastScroll && currentScroll > 120) {
+        setShowNavbar(false);
+      } else {
+        setShowNavbar(true);
+      }
+
+      lastScroll = currentScroll;
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () =>
+      window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const openCategory = (category) => {
     navigate(`/category/${category}`);
   };
 
   return (
-    
-    
-  <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-lg border-b border-[#f3e7e9]">
-      <div className="max-w-7xl mx-auto px-6 py-4">
-        <div className="bg-[#321820] text-white text-center text-sm py-2 tracking-wide">
-  ✨ Free Shipping on Orders Above ₹999 | Easy WhatsApp Ordering | Mukta Fancy Store
-</div>
+    <nav
+      className={`
+      fixed top-0 left-0 w-full z-50
+      transition-all duration-300 ease-in-out
+      ${showNavbar ? "translate-y-0" : "-translate-y-full"}
+      ${
+        isScrolled
+          ? "bg-white/90 backdrop-blur-md shadow-xl py-2"
+          : "bg-white py-4"
+      }
+      `}
+    >
+      {/* Announcement Bar */}
 
-        {/* TOP NAVBAR */}
+      <div className="bg-[#321820] text-white text-center text-sm py-2">
+        ✨ Free Shipping Above ₹999 | Easy WhatsApp Ordering |
+        Mukta Fancy Store
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6">
+
+        {/* TOP */}
 
         <div className="flex items-center justify-between gap-6">
 
@@ -40,96 +86,120 @@ function Navbar() {
             <img
               src="/logo.png"
               alt="Mukta Fancy Store"
-              className="w-14 h-14 rounded-full object-cover"
+              className={`rounded-full object-cover transition-all duration-300 ${
+                isScrolled ? "w-10 h-10" : "w-14 h-14"
+              }`}
             />
 
             <div>
-              <h1 className="text-3xl font-serif font-bold text-[#321820] tracking-wide">
-  Mukta Fancy Store
-</h1>
 
-<p className="text-sm text-[#9b1c3f] tracking-[3px] uppercase">
-  Premium Fashion Collection
-</p>
+              <h1
+                className={`font-serif font-bold text-[#321820] transition-all duration-300 ${
+                  isScrolled
+                    ? "text-2xl"
+                    : "text-3xl"
+                }`}
+              >
+                Mukta Fancy Store
+              </h1>
+
+              <p className="text-sm tracking-[3px] uppercase text-[#9b1c3f]">
+                Premium Fashion Collection
+              </p>
+
             </div>
+
           </div>
 
           {/* SEARCH */}
 
-          <div className="hidden lg:block flex-1 max-w-[420px]">
+          <div className="hidden lg:block flex-1 max-w-[450px]">
             <Search />
           </div>
 
           {/* ICONS */}
 
-         <div className="flex items-center gap-6 text-xl">
+          <div className="flex items-center gap-6">
+<div
+  className="relative cursor-pointer"
+  onClick={() => {
+  console.log("❤️ Heart clicked");
+  setIsWishlistOpen(true);
+}}
+>
+  <FaHeart className="text-2xl hover:text-red-500 hover:scale-110 transition" />
 
-            <FaHeart className="cursor-pointer hover:text-red-500 hover:scale-110 transition duration-300" />
+  {wishlistCount > 0 && (
+    <span className="absolute -top-2 -right-2 bg-red-500 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs">
+      {wishlistCount}
+    </span>
+  )}
+</div>
 
-<FaUser className="cursor-pointer hover:text-[#9b1c3f] hover:scale-110 transition duration-300" />
-
-            {/* CART */}
+            <FaUser
+              className="text-2xl cursor-pointer hover:text-[#9b1c3f] hover:scale-110 transition"
+            />
 
             <div
               className="relative cursor-pointer"
-              onClick={() => setIsCartOpen(true)}
+             onClick={() => {
+  console.log("🛒 Cart clicked");
+  setIsCartOpen(true);
+}}
             >
-             <FaShoppingCart className="text-2xl hover:text-[#9b1c3f] hover:scale-110 transition duration-300" />
+              <FaShoppingCart className="text-2xl hover:text-[#9b1c3f] hover:scale-110 transition" />
 
               {cartCount > 0 && (
-                <span className="absolute -top-3 -right-3 bg-gradient-to-r from-[#9b1c3f] to-[#d4af37] text-white text-xs w-6 h-6 rounded-full flex items-center justify-center font-bold">
+                <span className="absolute -top-2 -right-2 bg-[#9b1c3f] text-white w-5 h-5 rounded-full flex items-center justify-center text-xs">
                   {cartCount}
                 </span>
               )}
             </div>
 
-            <FaUser className="cursor-pointer transition hover:text-amber-700" />
-
           </div>
+
         </div>
 
-        {/* NAVIGATION */}
+        {/* MENU */}
 
-        <ul className="hidden md:flex items-center justify-center gap-10 mt-5 font-medium text-gray-700">
+        <ul className="hidden md:flex justify-center gap-10 mt-5 font-medium">
 
           <li
-            className="cursor-pointer relative transition duration-300 hover:text-[#9b1c3f] after:absolute after:left-0 after:-bottom-2 after:h-[2px] after:w-0 after:bg-[#9b1c3f] after:transition-all after:duration-300 hover:after:w-full"
             onClick={() => navigate("/")}
+            className="cursor-pointer hover:text-[#9b1c3f]"
           >
             Home
           </li>
 
           <li
-            className="cursor-pointer hover:text-[#9b1c3f]"
             onClick={() => openCategory("women")}
+            className="cursor-pointer hover:text-[#9b1c3f]"
           >
             Women
           </li>
 
           <li
-            className="cursor-pointer hover:text-[#9b1c3f]"
             onClick={() => openCategory("men")}
+            className="cursor-pointer hover:text-[#9b1c3f]"
           >
             Men
           </li>
 
           <li
-            className="cursor-pointer hover:text-[#9b1c3f]"
             onClick={() => openCategory("kids")}
+            className="cursor-pointer hover:text-[#9b1c3f]"
           >
             Kids
           </li>
 
           <li
-            className="cursor-pointer hover:text-[#9b1c3f]"
             onClick={() => openCategory("gift")}
+            className="cursor-pointer hover:text-[#9b1c3f]"
           >
             Gift Items
           </li>
 
-          <li
-            className="cursor-pointer hover:text-[#9b1c3f]"
-          >
+          <li className="cursor-pointer hover:text-[#9b1c3f]">
             Contact
           </li>
 
@@ -137,11 +207,10 @@ function Navbar() {
 
         {/* MOBILE SEARCH */}
 
-        {/* MOBILE SEARCH */}
+        <div className="lg:hidden mt-4">
+          <Search />
+        </div>
 
-<div className="lg:hidden mt-4">
-  <Search />
-</div>
       </div>
     </nav>
   );
