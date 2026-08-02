@@ -1,9 +1,26 @@
+import "./OfferBanner.css";
+
 function OfferBanner() {
   return (
-    <div className="bg-black text-white py-3 text-center font-semibold">
-        🎉 DURGA PUJA MEGA SALE | FLAT 20% OFF | FREE GIFTS ABOVE ₹1559 | USE CODE:
-        <span className="text-yellow-300"> MUKTA26</span>
-    </div>
+    <section className="offer-banner">
+      <div className="offer-content">
+        <span className="offer-badge">🔥 LIMITED TIME</span>
+
+        <h2>Durga Puja Mega Sale</h2>
+
+        <p>
+          Flat <strong>20% OFF</strong> • Free Gift Above
+          <strong> ₹1,559</strong> • Premium Fashion Collection
+        </p>
+
+        <div className="offer-code">
+          Use Code:
+          <span>MUKTA26</span>
+        </div>
+
+        <button>SHOP NOW</button>
+      </div>
+    </section>
   );
 }
 

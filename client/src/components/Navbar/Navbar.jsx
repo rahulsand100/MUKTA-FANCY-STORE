@@ -66,10 +66,9 @@ const {
     >
       {/* Announcement Bar */}
 
-      <div className="bg-[#321820] text-white text-center text-sm py-2">
-        ✨ Free Shipping Above ₹999 | Easy WhatsApp Ordering |
-        Mukta Fancy Store
-      </div>
+    <div className="bg-gradient-to-r from-[#321820] via-[#9b1c3f] to-[#321820] text-white text-center text-sm py-2 font-medium tracking-wide">
+  ✨ Welcome to Mukta Fancy Store • Premium Fashion • Free Shipping Above ₹1099 • WhatsApp Ordering Available
+</div>
 
       <div className="max-w-7xl mx-auto px-6">
 
