@@ -269,3 +269,4 @@ ${orderItems}
 }
 
 export default Checkout;
+  // Your WhatsApp Number
