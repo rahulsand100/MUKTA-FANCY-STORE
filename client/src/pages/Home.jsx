@@ -6,13 +6,17 @@ import Testimonials from "../components/Testimonials/Testimonials";
 
 function Home() {
   return (
-  <>
-  <Hero />
-  <Categories />
-  <FeaturedProducts />
-  <WhyChooseUs />
-  <Testimonials />
-</>
+    <>
+      <Hero />
+
+      <Categories />
+
+      <FeaturedProducts />
+
+      <WhyChooseUs />
+
+      <Testimonials />
+    </>
   );
 }
 

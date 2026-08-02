@@ -5,6 +5,7 @@ import { FaArrowLeft, FaStar, FaWhatsapp } from "react-icons/fa";
 import products from "../../data/products";
 import { useCart } from "../../context/CartContext";
 import "./ProductDetails.css";
+import RelatedProducts from "../../components/RelatedProducts/RelatedProducts";
 
 function ProductDetails() {
   const { id } = useParams();
@@ -21,6 +22,9 @@ function ProductDetails() {
   const product = products.find(
     (item) => Number(item.id) === Number(id)
   );
+  const relatedProducts = products
+  .filter((item) => item.id !== product?.id)
+  .slice(0, 3);
 
   if (!product) {
     return (
@@ -267,7 +271,42 @@ Please confirm my order.
           </button>
         </div>
       </div>
-    </main>
+
+<RelatedProducts
+  currentProduct={product}
+/>
+<section className="related-products">
+
+  <h2>You May Also Like</h2>
+
+  <div className="related-grid">
+
+    {relatedProducts.map((item) => (
+
+      <div
+        key={item.id}
+        className="related-card"
+        onClick={() => navigate(`/product/${item.id}`)}
+      >
+
+        <img
+          src={item.image}
+          alt={item.name}
+        />
+
+        <h3>{item.name}</h3>
+
+        <p>₹{item.price}</p>
+
+      </div>
+
+    ))}
+
+  </div>
+
+</section>
+
+</main>
   );
 }
 

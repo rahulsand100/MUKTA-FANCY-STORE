@@ -1,0 +1,405 @@
+.checkout-page {
+  min-height: 100vh;
+  background: linear-gradient(180deg,#fffdfb,#fdf5f3);
+  padding: 70px 6% 100px;
+}
+
+.checkout-title{
+  text-align:center;
+  margin-bottom:60px;
+}
+
+.checkout-title p{
+  color:#9b1c3f;
+  letter-spacing:5px;
+  font-size:13px;
+  font-weight:700;
+  text-transform:uppercase;
+}
+
+.checkout-title h1{
+  font-size:54px;
+  font-family:Georgia,serif;
+  color:#321820;
+  margin:15px 0;
+}
+
+.checkout-title span{
+  color:#777;
+  font-size:16px;
+}
+
+.checkout-layout{
+  max-width:1350px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:1.5fr 1fr;
+  gap:45px;
+  align-items:start;
+}
+
+/* Cards */
+
+.checkout-form,
+.order-summary{
+
+  background:rgba(255,255,255,.95);
+
+  backdrop-filter:blur(12px);
+
+  border-radius:22px;
+
+  padding:40px;
+
+  border:1px solid rgba(155,28,63,.08);
+
+  box-shadow:
+  0 20px 50px rgba(50,24,32,.08);
+}
+
+.checkout-form h2,
+.order-summary h2{
+
+  font-family:Georgia,serif;
+
+  color:#321820;
+
+  font-size:30px;
+
+  margin-bottom:30px;
+
+}
+
+/* Inputs */
+
+.checkout-input-grid{
+
+display:grid;
+
+grid-template-columns:repeat(2,1fr);
+
+gap:18px;
+
+margin-bottom:18px;
+
+}
+
+.checkout-form input,
+.checkout-form textarea{
+
+width:100%;
+
+padding:16px 18px;
+
+border:1px solid #e8d9d2;
+
+border-radius:12px;
+
+background:#fff;
+
+font-size:15px;
+
+transition:.3s;
+
+outline:none;
+
+}
+
+.checkout-form textarea{
+
+min-height:120px;
+
+resize:vertical;
+
+margin-bottom:20px;
+
+}
+
+.checkout-form input:focus,
+.checkout-form textarea:focus{
+
+border-color:#9b1c3f;
+
+box-shadow:0 0 0 4px rgba(155,28,63,.08);
+
+}
+
+/* Payment */
+
+.payment-section{
+
+margin-top:40px;
+
+}
+
+.payment-option{
+
+display:flex;
+
+gap:18px;
+
+padding:20px;
+
+border-radius:14px;
+
+border:1px solid #eadbd4;
+
+margin-bottom:15px;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+.payment-option:hover{
+
+border-color:#9b1c3f;
+
+transform:translateY(-2px);
+
+box-shadow:0 10px 25px rgba(0,0,0,.05);
+
+}
+
+.payment-option span{
+
+display:flex;
+
+flex-direction:column;
+
+}
+
+.payment-option strong{
+
+color:#321820;
+
+font-size:16px;
+
+}
+
+.payment-option small{
+
+margin-top:5px;
+
+color:#888;
+
+}
+
+/* Button */
+
+.place-order-button{
+
+width:100%;
+
+margin-top:35px;
+
+padding:18px;
+
+border:none;
+
+border-radius:14px;
+
+background:#321820;
+
+color:white;
+
+font-size:16px;
+
+font-weight:700;
+
+letter-spacing:2px;
+
+cursor:pointer;
+
+transition:.35s;
+
+}
+
+.place-order-button:hover{
+
+background:#9b1c3f;
+
+transform:translateY(-3px);
+
+box-shadow:0 15px 35px rgba(155,28,63,.25);
+
+}
+
+/* Summary */
+
+.order-summary{
+
+position:sticky;
+
+top:120px;
+
+}
+
+.summary-product{
+
+display:grid;
+
+grid-template-columns:80px 1fr auto;
+
+gap:18px;
+
+align-items:center;
+
+padding:20px 0;
+
+border-bottom:1px solid #eee;
+
+}
+
+.summary-product img{
+
+width:80px;
+
+height:100px;
+
+border-radius:12px;
+
+object-fit:cover;
+
+}
+
+.summary-product h3{
+
+font-family:Georgia,serif;
+
+font-size:17px;
+
+color:#321820;
+
+margin-bottom:6px;
+
+}
+
+.summary-product p{
+
+color:#777;
+
+font-size:14px;
+
+}
+
+.summary-product strong{
+
+font-size:17px;
+
+color:#321820;
+
+}
+
+.summary-line,
+.summary-total{
+
+display:flex;
+
+justify-content:space-between;
+
+margin-top:20px;
+
+}
+
+.summary-total{
+
+padding-top:25px;
+
+border-top:2px solid #321820;
+
+font-size:24px;
+
+font-weight:bold;
+
+color:#321820;
+
+}
+
+/* Secure Box */
+
+.secure-text{
+
+margin-top:25px;
+
+padding:16px;
+
+border-radius:12px;
+
+background:#f9f3f4;
+
+text-align:center;
+
+font-size:13px;
+
+color:#666;
+
+}
+
+/* Mobile */
+
+@media(max-width:900px){
+
+.checkout-layout{
+
+grid-template-columns:1fr;
+
+}
+
+.order-summary{
+
+position:static;
+
+}
+
+}
+
+@media(max-width:600px){
+
+.checkout-page{
+
+padding:40px 20px;
+
+}
+
+.checkout-title h1{
+
+font-size:38px;
+
+}
+
+.checkout-form,
+.order-summary{
+
+padding:25px;
+
+}
+
+.checkout-input-grid{
+
+grid-template-columns:1fr;
+
+}
+
+.summary-product{
+
+grid-template-columns:65px 1fr;
+
+}
+
+.summary-product img{
+
+width:65px;
+
+height:85px;
+
+}
+
+.summary-product>strong{
+
+grid-column:2;
+
+}
+
+} 

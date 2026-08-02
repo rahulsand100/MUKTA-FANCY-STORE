@@ -13,9 +13,7 @@ function Search() {
 
   const filteredProducts = products.filter((product) => {
     const productName = String(product.name || "").toLowerCase();
-    const productCategory = String(
-      product.category || ""
-    ).toLowerCase();
+    const productCategory = String(product.category || "").toLowerCase();
 
     return (
       productName.includes(searchValue) ||
@@ -35,11 +33,9 @@ function Search() {
 
         <input
           type="text"
-          placeholder="Search sarees, kurtis..."
+          placeholder="Search products, shirts, jeans, kurtis..."
           value={searchTerm}
-          onChange={(event) =>
-            setSearchTerm(event.target.value)
-          }
+          onChange={(e) => setSearchTerm(e.target.value)}
         />
 
         {searchTerm.length > 0 && (
@@ -53,50 +49,46 @@ function Search() {
         )}
       </div>
 
-      {searchTerm.trim().length > 0 && (
+      {searchTerm.trim().length >= 2 && (
         <div className="search-results">
           {filteredProducts.length > 0 ? (
-            filteredProducts.map((product) => (
-              <button
-                type="button"
-                className="search-product"
-                key={product.id}
-                onClick={() =>
-                  handleProductClick(product.id)
-                }
-              >
-                <img
-                  src={product.image}
-                  alt={product.name || "Mukta Product"}
-                />
+            <>
+              <div className="search-count">
+                {filteredProducts.length} Product
+                {filteredProducts.length !== 1 ? "s" : ""} Found
+              </div>
 
-                <div className="search-product-info">
-                  <span>
-                    {product.category || "Mukta Collection"}
-                  </span>
+              {filteredProducts.slice(0, 6).map((product) => (
+                <button
+                  key={product.id}
+                  type="button"
+                  className="search-product"
+                  onClick={() => handleProductClick(product.id)}
+                >
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                  />
 
-                  <h3>
-                    {product.name || "Premium Product"}
-                  </h3>
+                  <div className="search-product-info">
+                    <span>
+                      {product.category || "Mukta Collection"}
+                    </span>
 
-                  <p>
-                    ₹
-                    {Number(product.price || 0).toLocaleString(
-                      "en-IN"
-                    )}
-                  </p>
-                </div>
-              </button>
-            ))
+                    <h3>{product.name}</h3>
+
+                    <p>₹{product.price}</p>
+                  </div>
+                </button>
+              ))}
+            </>
           ) : (
             <div className="search-empty">
               <FaSearch />
 
               <h3>No products found</h3>
 
-              <p>
-                Try searching saree or kurti.
-              </p>
+              <p>Try searching shirts, jeans or kurtis.</p>
             </div>
           )}
         </div>

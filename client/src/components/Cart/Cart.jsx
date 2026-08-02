@@ -1,9 +1,10 @@
+import { useNavigate } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
 
 import "./Cart.css";
 
 function Cart() {
-  console.log("Cart Rendered");
+  const navigate = useNavigate();
 
   const {
     cart,
@@ -15,58 +16,8 @@ function Cart() {
     setIsCartOpen,
   } = useCart();
 
-console.log("Cart Rendered");
-console.log("isCartOpen:", isCartOpen);
-  const handleWhatsAppOrder = () => {
-    if (cart.length === 0) {
-      alert("Your cart is empty.");
-      return;
-    }
-
-    const orderId = `MUKTA-${Date.now()
-      .toString()
-      .slice(-8)}`;
-
-    const productDetails = cart
-      .map(
-        (item, index) =>
-          `${index + 1}. ${item.name}
-Quantity: ${item.quantity}
-Price: ₹${item.price}
-Total: ₹${item.price * item.quantity}`
-      )
-      .join("\n\n");
-
-    const message = `
-🛍️ NEW ORDER - MUKTA FANCY STORE
-
-🆔 Order ID: ${orderId}
-
-📦 ORDER DETAILS
-
-${productDetails}
-
-💰 GRAND TOTAL: ₹${cartTotal}
-
-Hello Mukta Fancy Store,
-I want to place this order.
-
-Please confirm my order.
-`;
-
-    const phoneNumber = "+919863139043";
-
-    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
-      message
-    )}`;
-
-    window.open(whatsappUrl, "_blank");
-  };
-
   return (
     <>
-  
-      
       {isCartOpen && (
         <div
           className="cart-overlay"
@@ -79,6 +30,8 @@ Please confirm my order.
           isCartOpen ? "cart-open" : ""
         }`}
       >
+        {/* Header */}
+
         <div className="cart-header">
           <div>
             <p className="cart-small-title">
@@ -96,6 +49,8 @@ Please confirm my order.
             ×
           </button>
         </div>
+
+        {/* Products */}
 
         <div className="cart-items">
           {cart.length === 0 ? (
@@ -166,10 +121,13 @@ Please confirm my order.
           )}
         </div>
 
+        {/* Footer */}
+
         {cart.length > 0 && (
           <div className="cart-footer">
+
             <div className="delivery-message">
-              Order directly through WhatsApp
+              🚚 Free Delivery on Orders Above ₹999
             </div>
 
             <div className="cart-total">
@@ -183,9 +141,12 @@ Please confirm my order.
             <button
               type="button"
               className="whatsapp-order-button"
-              onClick={handleWhatsAppOrder}
+              onClick={() => {
+                setIsCartOpen(false);
+                navigate("/checkout");
+              }}
             >
-              ORDER ON WHATSAPP
+              PROCEED TO CHECKOUT
             </button>
 
             <button
@@ -195,6 +156,7 @@ Please confirm my order.
             >
               CONTINUE SHOPPING
             </button>
+
           </div>
         )}
       </div>

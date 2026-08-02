@@ -27,16 +27,70 @@ function Checkout() {
   };
 
   const handleOrder = (event) => {
-    event.preventDefault();
+  event.preventDefault();
 
-    if (cart.length === 0) {
-      alert("Your cart is empty.");
-      navigate("/");
-      return;
-    }
+  if (cart.length === 0) {
+    alert("Your cart is empty.");
+    navigate("/");
+    return;
+  }
 
-    alert("Order placed successfully! 🎉");
-  };
+  // Generate Order ID
+  const orderId = `MUKTA-${Date.now()
+    .toString()
+    .slice(-8)}`;
+
+  // Create product list
+  const orderItems = cart
+    .map(
+      (item, index) =>
+`${index + 1}. ${item.name}
+Size: ${item.selectedSize || "N/A"}
+Quantity: ${item.quantity}
+Price: ₹${item.price}
+Total: ₹${item.price * item.quantity}`
+    )
+    .join("\n\n");
+
+  // WhatsApp Message
+  const message = `
+🛍️ *NEW ORDER - MUKTA FANCY STORE*
+
+🆔 Order ID: ${orderId}
+
+👤 Name: ${formData.name}
+
+📞 Phone: ${formData.phone}
+
+📧 Email: ${formData.email}
+
+📍 Address:
+${formData.address}
+
+${formData.city}, ${formData.state}
+
+PIN: ${formData.pincode}
+
+━━━━━━━━━━━━━━━━━━
+
+${orderItems}
+
+━━━━━━━━━━━━━━━━━━
+
+💰 Grand Total: ₹${cartTotal}
+
+💳 Payment: ${paymentMethod.toUpperCase()}
+`;
+
+  // Your WhatsApp Number
+  const phoneNumber = "919863139043";
+
+  const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
+    message
+  )}`;
+
+  window.open(whatsappURL, "_blank");
+};
 
   return (
     <main className="checkout-page">

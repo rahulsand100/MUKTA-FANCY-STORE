@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar/Navbar";
 import Cart from "./components/Cart/Cart";
 import Wishlist from "./components/Wishlist/Wishlist";
+import Checkout from "./components/Checkout/Checkout";
 
 import Home from "./pages/Home";
 import ProductDetails from "./pages/ProductDetails/ProductDetails";
@@ -19,9 +20,18 @@ function App() {
 
   <div className="pt-36">
     <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/product/:id" element={<ProductDetails />} />
-    </Routes>
+  <Route path="/" element={<Home />} />
+
+  <Route
+    path="/product/:id"
+    element={<ProductDetails />}
+  />
+
+  <Route
+    path="/checkout"
+    element={<Checkout />}
+  />
+</Routes>
   </div>
 
   

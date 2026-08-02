@@ -42,8 +42,8 @@ function Category() {
 
         <span>
           Discover styles carefully selected for you.
-        </span>
-      </div>
+        </span>f 
+      </div>d
 
       {categoryProducts.length > 0 ? (
         <div className="category-products-grid">
