@@ -60,7 +60,7 @@ const {
       ${
         isScrolled
           ? "bg-white/90 backdrop-blur-md shadow-xl py-2"
-          : "bg-white py-4"
+          :"bg-white shadow-lg py-4"
       }
       `}
     >
@@ -136,7 +136,7 @@ const {
 </div>
 
             <FaUser
-              className="text-2xl cursor-pointer hover:text-[#9b1c3f] hover:scale-110 transition"
+             className="text-2xl p-2 rounded-full hover:bg-[#9b1c3f] hover:text-white transition-all duration-300 cursor-pointer"
             />
 
             <div
@@ -165,7 +165,7 @@ const {
 
           <li
             onClick={() => navigate("/")}
-            className="cursor-pointer hover:text-[#9b1c3f]"
+            className="cursor-pointer transition-all duration-300 hover:text-[#9b1c3f] hover:-translate-y-1"
           >
             Home
           </li>
