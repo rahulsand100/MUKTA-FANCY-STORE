@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom"; 
+import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar/Navbar";
 import Cart from "./components/Cart/Cart";
 import Wishlist from "./components/Wishlist/Wishlist";
@@ -6,39 +6,44 @@ import Checkout from "./components/Checkout/Checkout";
 
 import Home from "./pages/Home";
 import ProductDetails from "./pages/ProductDetails/ProductDetails";
+import Category from "./pages/Category/Category";
+
 import Footer from "./components/Footer/Footer";
 import FloatingWhatsApp from "./components/FloatingWhatsApp/FloatingWhatsApp";
 
 function App() {
   return (
     <>
-          <Navbar />
+      <Navbar />
 
-  <Cart />
+      <Cart />
+      <Wishlist />
 
-  <Wishlist />
+      <div className="pt-36">
+        <Routes>
+          <Route path="/" element={<Home />} />
 
-  <div className="pt-36">
-    <Routes>
-  <Route path="/" element={<Home />} />
+          <Route
+            path="/product/:id"
+            element={<ProductDetails />}
+          />
 
-  <Route
-    path="/product/:id"
-    element={<ProductDetails />}
-  />
+          <Route
+            path="/category/:category"
+            element={<Category />}
+          />
 
-  <Route
-    path="/checkout"
-    element={<Checkout />}
-  />
-</Routes>
-  </div>
+          <Route
+            path="/checkout"
+            element={<Checkout />}
+          />
+        </Routes>
+      </div>
 
-  
-  <Footer />
-<FloatingWhatsApp />
-</>
-    );
-  }
+      <Footer />
+      <FloatingWhatsApp />
+    </>
+  );
+}
 
-  export default App;
+export default App;
