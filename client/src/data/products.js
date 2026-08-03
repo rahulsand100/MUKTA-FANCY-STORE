@@ -7,6 +7,7 @@ const products = [
     price: 1199,
     oldPrice: 1799,
     discount: "NEW",
+    rating: 4.8,
   },
   {
     id: 2,
@@ -16,6 +17,7 @@ const products = [
     price: 999,
     oldPrice: 1499,
     discount: "SALE",
+    rating: 4.7,
   },
   {
     id: 3,
@@ -24,7 +26,8 @@ const products = [
     image: "/products/baggy_jeans.jpg",
     price: 1299,
     oldPrice: 1999,
-    discount: "NEW",
+    discount: "HOT",
+    rating: 4.9,
   },
   {
     id: 4,
@@ -34,6 +37,139 @@ const products = [
     price: 799,
     oldPrice: 1199,
     discount: "SALE",
+    rating: 4.6,
+  },
+
+  {
+    id: 5,
+    name: "Premium Silk Saree",
+    category: "women",
+    image: "/products/shirt_multicolor.jpg",
+    price: 2499,
+    oldPrice: 3299,
+    discount: "NEW",
+    rating: 5.0,
+  },
+
+  {
+    id: 6,
+    name: "Designer Kurti",
+    category: "women",
+    image: "/products/shirt_pink.jpg",
+    price: 1499,
+    oldPrice: 1999,
+    discount: "TRENDING",
+    rating: 4.8,
+  },
+
+  {
+    id: 7,
+    name: "Cotton Kurti Set",
+    category: "women",
+    image: "/products/baggy_jeans.jpg",
+    price: 1699,
+    oldPrice: 2299,
+    discount: "SALE",
+    rating: 4.9,
+  },
+
+  {
+    id: 8,
+    name: "Festival Saree",
+    category: "women",
+    image: "/products/olive_polo.jpg",
+    price: 2899,
+    oldPrice: 3699,
+    discount: "HOT",
+    rating: 5.0,
+  },
+
+  {
+    id: 9,
+    name: "Kids Party Dress",
+    category: "kids",
+    image: "/products/shirt_multicolor.jpg",
+    price: 899,
+    oldPrice: 1299,
+    discount: "NEW",
+    rating: 4.8,
+  },
+
+  {
+    id: 10,
+    name: "Boys Casual Set",
+    category: "kids",
+    image: "/products/shirt_pink.jpg",
+    price: 999,
+    oldPrice: 1499,
+    discount: "SALE",
+    rating: 4.7,
+  },
+
+  {
+    id: 11,
+    name: "Girls Frock",
+    category: "kids",
+    image: "/products/baggy_jeans.jpg",
+    price: 1099,
+    oldPrice: 1599,
+    discount: "NEW",
+    rating: 4.8,
+  },
+
+  {
+    id: 12,
+    name: "Kids Ethnic Wear",
+    category: "kids",
+    image: "/products/olive_polo.jpg",
+    price: 1299,
+    oldPrice: 1799,
+    discount: "HOT",
+    rating: 4.9,
+  },
+
+  {
+    id: 13,
+    name: "Luxury Gift Box",
+    category: "gift",
+    image: "/products/shirt_multicolor.jpg",
+    price: 699,
+    oldPrice: 999,
+    discount: "SALE",
+    rating: 4.8,
+  },
+
+  {
+    id: 14,
+    name: "Designer Handbag",
+    category: "gift",
+    image: "/products/shirt_pink.jpg",
+    price: 1899,
+    oldPrice: 2499,
+    discount: "NEW",
+    rating: 4.9,
+  },
+
+  {
+    id: 15,
+    name: "Ladies Wallet",
+    category: "gift",
+    image: "/products/baggy_jeans.jpg",
+    price: 799,
+    oldPrice: 1099,
+    discount: "TRENDING",
+    rating: 4.7,
+  },
+
+  {
+    id: 16,
+    name: "Premium Combo Gift",
+    category: "gift",
+    image: "/products/olive_polo.jpg",
+    price: 1499,
+    oldPrice: 1999,
+    discount: "BEST",
+    rating: 5.0,
   },
 ];
 
