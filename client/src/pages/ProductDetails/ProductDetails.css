@@ -321,3 +321,65 @@ opacity:.5;
 }
 
 }
+/* =====================================
+   DELIVERY CARD
+===================================== */
+
+.delivery-card{
+    margin:35px 0;
+    padding:25px;
+    background:#fff;
+    border:1px solid #ececec;
+    border-radius:18px;
+    box-shadow:0 10px 30px rgba(0,0,0,.05);
+    transition:.35s;
+}
+
+.delivery-card:hover{
+    transform:translateY(-5px);
+    box-shadow:0 18px 40px rgba(0,0,0,.12);
+}
+
+.delivery-card h3{
+    color:#321820;
+    font-size:22px;
+    margin-bottom:10px;
+}
+
+.delivery-card p{
+    color:#666;
+    margin-bottom:18px;
+}
+
+.delivery-card input{
+    width:100%;
+    padding:16px;
+    border:2px solid #e7e7e7;
+    border-radius:12px;
+    outline:none;
+    font-size:16px;
+    transition:.3s;
+    margin-bottom:15px;
+}
+
+.delivery-card input:focus{
+    border-color:#9b1c3f;
+}
+
+.delivery-card button{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:12px;
+    background:linear-gradient(135deg,#321820,#9b1c3f);
+    color:#fff;
+    font-size:16px;
+    font-weight:700;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.delivery-card button:hover{
+    transform:translateY(-3px);
+    box-shadow:0 15px 35px rgba(155,28,63,.35);
+}
