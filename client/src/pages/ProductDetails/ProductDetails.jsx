@@ -117,6 +117,10 @@ Please confirm my order.
           <h1>{product.name}</h1>
 
           <div className="product-details-rating">
+            <div className="product-stock">
+    <span className="stock-dot"></span>
+    In Stock • Ready to Ship
+</div>
             <FaStar />
             <span>{product.rating || "4.8"}</span>
             <small>Premium Collection</small>
@@ -191,6 +195,20 @@ Please confirm my order.
               </button>
             </div>
           </div>
+          <div className="delivery-card">
+
+  <h3>🚚 Delivery Information</h3>
+
+  <p>Free Delivery on orders above ₹999</p>
+
+  <input
+    type="text"
+    placeholder="Enter PIN Code"
+  />
+
+  <button>Check Delivery</button>
+
+</div>
 
           <div className="product-benefits">
             <p>✓ Premium Quality</p>
