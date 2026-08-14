@@ -1,98 +1,360 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaSearch, FaTimes } from "react-icons/fa";
+import {
+  FaSearch,
+  FaTimes,
+  FaArrowRight,
+  FaArrowLeft,
+} from "react-icons/fa";
 
 import products from "../../data/products";
 import "./Search.css";
 
-function Search() {
-  const [searchTerm, setSearchTerm] = useState("");
+const popularSearches = [
+  "Saree",
+  "Kurti",
+  "Jeans",
+  "Shirt",
+  "Kids Wear",
+];
+
+function Search({ onClose }) {
   const navigate = useNavigate();
 
-  const searchValue = searchTerm.toLowerCase().trim();
+  const [search, setSearch] = useState("");
 
-  const filteredProducts = products.filter((product) => {
-    const productName = String(product.name || "").toLowerCase();
-    const productCategory = String(product.category || "").toLowerCase();
+  const filteredProducts =
+    search.trim().length > 0
+      ? products
+          .filter((product) =>
+            `${product.name} ${product.category || ""}`
+              .toLowerCase()
+              .includes(search.toLowerCase())
+          )
+          .slice(0, 5)
+      : [];
 
-    return (
-      productName.includes(searchValue) ||
-      productCategory.includes(searchValue)
-    );
-  });
+  // Close with ESC
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        onClose?.();
+      }
+    };
 
-  const handleProductClick = (productId) => {
-    setSearchTerm("");
-    navigate(`/product/${productId}`);
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [onClose]);
+
+  // Search shortcut /
+  useEffect(() => {
+    const handleSlash = (event) => {
+      if (
+        event.key === "/" &&
+        document.activeElement?.tagName !== "INPUT"
+      ) {
+        event.preventDefault();
+
+        document
+          .querySelector(".premium-search-input")
+          ?.focus();
+      }
+    };
+
+    document.addEventListener("keydown", handleSlash);
+
+    return () => {
+      document.removeEventListener("keydown", handleSlash);
+    };
+  }, []);
+
+  const handleProductClick = (id) => {
+    onClose?.();
+    navigate(`/product/${id}`);
+  };
+
+  const handlePopularClick = (item) => {
+    setSearch(item);
   };
 
   return (
-    <div className="search-container">
-      <div className="search-box">
-        <FaSearch className="search-icon" />
+    <div className="premium-search-overlay">
 
-        <input
-          type="text"
-          placeholder="Search products, shirts, jeans, kurtis..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+      {/* Background */}
 
-        {searchTerm.length > 0 && (
+      <div
+        className="premium-search-backdrop"
+        onClick={onClose}
+      ></div>
+
+
+      {/* Search Panel */}
+
+      <div className="premium-search-panel">
+
+        {/* Top Header */}
+
+        <div className="premium-search-top">
+
           <button
-            type="button"
-            className="search-clear"
-            onClick={() => setSearchTerm("")}
+            className="premium-search-back"
+            onClick={onClose}
+            aria-label="Close search"
+          >
+            <FaArrowLeft />
+          </button>
+
+          <div className="premium-search-brand">
+            MUKTA
+            <span>FANCY STORE</span>
+          </div>
+
+          <button
+            className="premium-search-close"
+            onClick={onClose}
+            aria-label="Close search"
           >
             <FaTimes />
           </button>
-        )}
-      </div>
 
-      {searchTerm.trim().length >= 2 && (
-        <div className="search-results">
-          {filteredProducts.length > 0 ? (
+        </div>
+
+
+        {/* Search Box */}
+
+        <div className="premium-search-box">
+
+          <FaSearch className="premium-search-icon" />
+
+          <input
+            autoFocus
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search sarees, kurtis, jeans..."
+            className="premium-search-input"
+          />
+
+          {search.length > 0 && (
+            <button
+              className="premium-search-clear"
+              onClick={() => setSearch("")}
+            >
+              <FaTimes />
+            </button>
+          )}
+
+          <span className="premium-search-shortcut">
+            /
+          </span>
+
+        </div>
+
+
+        {/* Search Content */}
+
+        <div className="premium-search-content">
+
+          {search.trim().length === 0 ? (
+
             <>
-              <div className="search-count">
-                {filteredProducts.length} Product
-                {filteredProducts.length !== 1 ? "s" : ""} Found
+              {/* Popular */}
+
+              <div className="premium-search-heading">
+
+                <span></span>
+
+                <h3>
+                  POPULAR SEARCHES
+                </h3>
+
+                <span></span>
+
               </div>
 
-              {filteredProducts.slice(0, 6).map((product) => (
-                <button
-                  key={product.id}
-                  type="button"
-                  className="search-product"
-                  onClick={() => handleProductClick(product.id)}
-                >
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                  />
 
-                  <div className="search-product-info">
-                    <span>
-                      {product.category || "Mukta Collection"}
-                    </span>
+              <div className="premium-search-tags">
 
-                    <h3>{product.name}</h3>
+                {popularSearches.map((item) => (
 
-                    <p>₹{product.price}</p>
-                  </div>
-                </button>
-              ))}
+                  <button
+                    key={item}
+                    onClick={() =>
+                      handlePopularClick(item)
+                    }
+                    className="premium-search-tag"
+                  >
+
+                    <span>{item}</span>
+
+                    <FaArrowRight />
+
+                  </button>
+
+                ))}
+
+              </div>
+
+
+              {/* Premium message */}
+
+              <div className="premium-search-message">
+
+                <p className="premium-search-label">
+                  MUKTA COLLECTION
+                </p>
+
+                <h2>
+                  Find Your
+                  <br />
+                  Perfect Style.
+                </h2>
+
+                <p>
+                  Discover carefully selected fashion,
+                  festive wear and everyday essentials.
+                </p>
+
+              </div>
+
             </>
+
           ) : (
-            <div className="search-empty">
-              <FaSearch />
 
-              <h3>No products found</h3>
+            <>
+              {/* Search Results */}
 
-              <p>Try searching shirts, jeans or kurtis.</p>
-            </div>
+              <div className="premium-results-header">
+
+                <span>
+                  {filteredProducts.length}
+                </span>
+
+                {filteredProducts.length === 1
+                  ? " PRODUCT FOUND"
+                  : " PRODUCTS FOUND"}
+
+              </div>
+
+
+              {filteredProducts.length > 0 ? (
+
+                <div className="premium-results-list">
+
+                  {filteredProducts.map((product) => (
+
+                    <button
+                      key={product.id}
+                      className="premium-result-card"
+                      onClick={() =>
+                        handleProductClick(product.id)
+                      }
+                    >
+
+                      <div className="premium-result-image">
+
+                        <img
+                          src={product.image}
+                          alt={product.name}
+                        />
+
+                      </div>
+
+
+                      <div className="premium-result-info">
+
+                        <span className="premium-result-category">
+                          {product.category ||
+                            "MUKTA COLLECTION"}
+                        </span>
+
+                        <h3>
+                          {product.name}
+                        </h3>
+
+                        <div className="premium-result-price">
+
+                          <strong>
+                            ₹{product.price}
+                          </strong>
+
+                          {product.oldPrice && (
+                            <del>
+                              ₹{product.oldPrice}
+                            </del>
+                          )}
+
+                        </div>
+
+                      </div>
+
+
+                      <div className="premium-result-arrow">
+
+                        <FaArrowRight />
+
+                      </div>
+
+                    </button>
+
+                  ))}
+
+                </div>
+
+              ) : (
+
+                <div className="premium-no-results">
+
+                  <div>
+                    <FaSearch />
+                  </div>
+
+                  <h3>
+                    No products found
+                  </h3>
+
+                  <p>
+                    Try searching for saree, kurti,
+                    jeans or shirt.
+                  </p>
+
+                </div>
+
+              )}
+
+            </>
+
           )}
+
         </div>
-      )}
+
+
+        {/* Bottom */}
+
+        <div className="premium-search-footer">
+
+          <span>
+            Press
+            <kbd>ESC</kbd>
+            to close
+          </span>
+
+          <span>
+            <kbd>/</kbd>
+            to search
+          </span>
+
+          <span>
+            MUKTA FANCY STORE
+          </span>
+
+        </div>
+
+      </div>
+
     </div>
   );
 }
