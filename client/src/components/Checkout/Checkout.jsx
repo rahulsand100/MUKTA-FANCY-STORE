@@ -1,5 +1,19 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  FaMapMarkerAlt,
+  FaPhoneAlt,
+  FaEnvelope,
+  FaUser,
+  FaMoneyBillWave,
+  FaMobileAlt,
+  FaCreditCard,
+  FaLock,
+  FaTruck,
+  FaShieldAlt,
+  FaCheckCircle,
+} from "react-icons/fa";
+
 import { useCart } from "../../context/CartContext";
 import "./Checkout.css";
 
@@ -27,41 +41,36 @@ function Checkout() {
   };
 
   const handleOrder = (event) => {
-  event.preventDefault();
+    event.preventDefault();
 
-  if (cart.length === 0) {
-    alert("Your cart is empty.");
-    navigate("/");
-    return;
-  }
+    if (cart.length === 0) {
+      alert("Your cart is empty.");
+      navigate("/");
+      return;
+    }
 
-  // Generate Order ID
-  const orderId = `MUKTA-${Date.now()
-    .toString()
-    .slice(-8)}`;
+    const orderId = `MUKTA-${Date.now()
+      .toString()
+      .slice(-8)}`;
 
-  // Create product list
-  const orderItems = cart
-    .map(
-      (item, index) =>
-`${index + 1}. ${item.name}
+    const orderItems = cart
+      .map(
+        (item, index) =>
+          `${index + 1}. ${item.name}
 Size: ${item.selectedSize || "N/A"}
 Quantity: ${item.quantity}
 Price: ₹${item.price}
 Total: ₹${item.price * item.quantity}`
-    )
-    .join("\n\n");
+      )
+      .join("\n\n");
 
-  // WhatsApp Message
-  const message = `
+    const message = `
 🛍️ *NEW ORDER - MUKTA FANCY STORE*
 
 🆔 Order ID: ${orderId}
 
 👤 Name: ${formData.name}
-
 📞 Phone: ${formData.phone}
-
 📧 Email: ${formData.email}
 
 📍 Address:
@@ -82,191 +91,601 @@ ${orderItems}
 💳 Payment: ${paymentMethod.toUpperCase()}
 `;
 
-  // Your WhatsApp Number
-  const phoneNumber = "919863139043";
+    const phoneNumber = "919863139043";
 
-  const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
-    message
-  )}`;
+    const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
+      message
+    )}`;
 
-  window.open(whatsappURL, "_blank");
-};
+    window.open(whatsappURL, "_blank");
+  };
+
+  const paymentOptions = [
+    {
+      id: "cod",
+      icon: <FaMoneyBillWave />,
+      title: "Cash on Delivery",
+      description: "Pay when your order arrives",
+      badge: "POPULAR",
+    },
+    {
+      id: "upi",
+      icon: <FaMobileAlt />,
+      title: "UPI Payment",
+      description: "Google Pay • PhonePe • Paytm",
+      badge: "INSTANT",
+    },
+    {
+      id: "card",
+      icon: <FaCreditCard />,
+      title: "Credit / Debit Card",
+      description: "Secure card payment",
+      badge: "SECURE",
+    },
+  ];
 
   return (
     <main className="checkout-page">
-      <div className="checkout-title">
-        <p>MUKTA FANCY STORE</p>
-        <h1>Secure Checkout</h1>
-        <span>Complete your order securely.</span>
+
+      {/* =========================
+          CHECKOUT HEADER
+      ========================== */}
+
+      <div className="checkout-header">
+
+        <button
+          className="checkout-back"
+          type="button"
+          onClick={() => navigate("/")}
+        >
+          ← Back to Shopping
+        </button>
+
+        <div className="checkout-brand">
+          <span>MUKTA</span>
+          <strong>FANCY STORE</strong>
+        </div>
+
+        <div className="checkout-security">
+          <FaLock />
+          <span>SECURE CHECKOUT</span>
+        </div>
+
       </div>
 
-      <form className="checkout-layout" onSubmit={handleOrder}>
-        <section className="checkout-form">
-          <h2>Delivery Details</h2>
 
-          <div className="checkout-input-grid">
-            <input
-              type="text"
-              name="name"
-              placeholder="Full Name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-            />
+      {/* =========================
+          PAGE TITLE
+      ========================== */}
 
-            <input
-              type="tel"
-              name="phone"
-              placeholder="Phone Number"
-              value={formData.phone}
-              onChange={handleChange}
-              required
-            />
+      <div className="checkout-heading">
 
-            <input
-              type="email"
-              name="email"
-              placeholder="Email Address"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
+        <span>FINAL STEP</span>
 
-            <input
-              type="text"
-              name="pincode"
-              placeholder="PIN Code"
-              value={formData.pincode}
-              onChange={handleChange}
-              required
-            />
-          </div>
+        <h1>Complete Your Order</h1>
 
-          <textarea
-            name="address"
-            placeholder="House No, Street, Area"
-            value={formData.address}
-            onChange={handleChange}
-            required
-          />
+        <p>
+          Enter your delivery details and choose your
+          preferred payment method.
+        </p>
 
-          <div className="checkout-input-grid">
-            <input
-              type="text"
-              name="city"
-              placeholder="City"
-              value={formData.city}
-              onChange={handleChange}
-              required
-            />
+      </div>
 
-            <input
-              type="text"
-              name="state"
-              placeholder="State"
-              value={formData.state}
-              onChange={handleChange}
-              required
-            />
-          </div>
 
-          <div className="payment-section">
-            <h2>Payment Method</h2>
+      {/* =========================
+          CHECKOUT FORM
+      ========================== */}
 
-            <label className="payment-option">
-              <input
-                type="radio"
-                name="payment"
-                checked={paymentMethod === "cod"}
-                onChange={() => setPaymentMethod("cod")}
-              />
+      <form
+        className="checkout-layout"
+        onSubmit={handleOrder}
+      >
 
-              <span>
-                <strong>Cash on Delivery</strong>
-                <small>Pay when your order arrives</small>
-              </span>
-            </label>
+        {/* LEFT SIDE */}
 
-            <label className="payment-option">
-              <input
-                type="radio"
-                name="payment"
-                checked={paymentMethod === "upi"}
-                onChange={() => setPaymentMethod("upi")}
-              />
+        <section className="checkout-left">
 
-              <span>
-                <strong>UPI Payment</strong>
-                <small>Google Pay, PhonePe, Paytm</small>
-              </span>
-            </label>
+          {/* DELIVERY CARD */}
 
-            <label className="payment-option">
-              <input
-                type="radio"
-                name="payment"
-                checked={paymentMethod === "card"}
-                onChange={() => setPaymentMethod("card")}
-              />
+          <div className="checkout-card">
 
-              <span>
-                <strong>Credit / Debit Card</strong>
-                <small>Secure card payment</small>
-              </span>
-            </label>
-          </div>
+            <div className="checkout-card-header">
 
-          <button type="submit" className="place-order-button">
-            PLACE ORDER
-          </button>
-        </section>
-
-        <aside className="order-summary">
-          <h2>Order Summary</h2>
-
-          {cart.map((item) => (
-            <div className="summary-product" key={item.id}>
-              <img src={item.image} alt={item.name} />
+              <div className="checkout-number">
+                01
+              </div>
 
               <div>
-                <h3>{item.name}</h3>
-                <p>Quantity: {item.quantity}</p>
+                <h2>Delivery Details</h2>
+
+                <p>
+                  Where should we deliver your order?
+                </p>
               </div>
+
+            </div>
+
+
+            <div className="checkout-input-grid">
+
+              <div className="checkout-field">
+
+                <label>
+                  <FaUser />
+                  Full Name
+                </label>
+
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Enter your full name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                />
+
+              </div>
+
+
+              <div className="checkout-field">
+
+                <label>
+                  <FaPhoneAlt />
+                  Phone Number
+                </label>
+
+                <input
+                  type="tel"
+                  name="phone"
+                  placeholder="Enter your phone number"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  required
+                />
+
+              </div>
+
+
+              <div className="checkout-field">
+
+                <label>
+                  <FaEnvelope />
+                  Email Address
+                </label>
+
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Enter your email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                />
+
+              </div>
+
+
+              <div className="checkout-field">
+
+                <label>
+                  <FaMapMarkerAlt />
+                  PIN Code
+                </label>
+
+                <input
+                  type="text"
+                  name="pincode"
+                  placeholder="6-digit PIN code"
+                  value={formData.pincode}
+                  onChange={handleChange}
+                  required
+                />
+
+              </div>
+
+            </div>
+
+
+            <div className="checkout-field checkout-full-field">
+
+              <label>
+                <FaMapMarkerAlt />
+                Complete Address
+              </label>
+
+              <textarea
+                name="address"
+                placeholder="House number, street, area, landmark..."
+                value={formData.address}
+                onChange={handleChange}
+                required
+              />
+
+            </div>
+
+
+            <div className="checkout-input-grid">
+
+              <div className="checkout-field">
+
+                <label>
+                  City
+                </label>
+
+                <input
+                  type="text"
+                  name="city"
+                  placeholder="Enter your city"
+                  value={formData.city}
+                  onChange={handleChange}
+                  required
+                />
+
+              </div>
+
+
+              <div className="checkout-field">
+
+                <label>
+                  State
+                </label>
+
+                <input
+                  type="text"
+                  name="state"
+                  placeholder="Enter your state"
+                  value={formData.state}
+                  onChange={handleChange}
+                  required
+                />
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          {/* PAYMENT CARD */}
+
+          <div className="checkout-card payment-card">
+
+            <div className="checkout-card-header">
+
+              <div className="checkout-number">
+                02
+              </div>
+
+              <div>
+                <h2>Payment Method</h2>
+
+                <p>
+                  Choose how you'd like to pay
+                </p>
+              </div>
+
+            </div>
+
+
+            <div className="payment-options">
+
+              {paymentOptions.map((option) => {
+
+                const selected =
+                  paymentMethod === option.id;
+
+                return (
+                  <label
+                    key={option.id}
+                    className={`payment-option ${
+                      selected
+                        ? "payment-option-active"
+                        : ""
+                    }`}
+                  >
+
+                    <input
+                      type="radio"
+                      name="payment"
+                      value={option.id}
+                      checked={selected}
+                      onChange={() =>
+                        setPaymentMethod(option.id)
+                      }
+                    />
+
+
+                    <div className="payment-radio">
+
+                      {selected && (
+                        <FaCheckCircle />
+                      )}
+
+                    </div>
+
+
+                    <div className="payment-icon">
+
+                      {option.icon}
+
+                    </div>
+
+
+                    <div className="payment-content">
+
+                      <div className="payment-title-row">
+
+                        <h3>
+                          {option.title}
+                        </h3>
+
+                        <span>
+                          {option.badge}
+                        </span>
+
+                      </div>
+
+                      <p>
+                        {option.description}
+                      </p>
+
+                    </div>
+
+
+                    <FaShieldAlt className="payment-security-icon" />
+
+                  </label>
+                );
+              })}
+
+            </div>
+
+
+            <div className="payment-note">
+
+              <FaLock />
+
+              <span>
+                Your payment information is protected
+                with secure encryption.
+              </span>
+
+            </div>
+
+          </div>
+
+
+          {/* PLACE ORDER */}
+
+          <button
+            type="submit"
+            className="place-order-button"
+          >
+
+            <span>
+              PLACE ORDER
+            </span>
+
+            <strong>
+              ₹{cartTotal.toLocaleString("en-IN")}
+            </strong>
+
+          </button>
+
+
+          <p className="order-note">
+            By placing your order, you agree to our
+            terms and shopping policies.
+          </p>
+
+        </section>
+
+
+        {/* =========================
+            RIGHT SIDE
+        ========================== */}
+
+        <aside className="order-summary">
+
+          <div className="summary-top">
+
+            <div>
+
+              <span>YOUR BAG</span>
+
+              <h2>Order Summary</h2>
+
+            </div>
+
+            <div className="summary-count">
+              {cart.length}{" "}
+              {cart.length === 1
+                ? "ITEM"
+                : "ITEMS"}
+            </div>
+
+          </div>
+
+
+          {/* PRODUCTS */}
+
+          <div className="summary-products">
+
+            {cart.map((item) => (
+
+              <div
+                className="summary-product"
+                key={item.id}
+              >
+
+                <div className="summary-image">
+
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                  />
+
+                  <span>
+                    {item.quantity}
+                  </span>
+
+                </div>
+
+
+                <div className="summary-product-info">
+
+                  <h3>
+                    {item.name}
+                  </h3>
+
+                  {item.selectedSize && (
+                    <p>
+                      Size:{" "}
+                      {item.selectedSize}
+                    </p>
+                  )}
+
+                  <p>
+                    Qty: {item.quantity}
+                  </p>
+
+                </div>
+
+
+                <strong>
+                  ₹
+                  {(
+                    item.price *
+                    item.quantity
+                  ).toLocaleString("en-IN")}
+                </strong>
+
+              </div>
+
+            ))}
+
+          </div>
+
+
+          {/* PRICE DETAILS */}
+
+          <div className="summary-price">
+
+            <div>
+              <span>Subtotal</span>
 
               <strong>
                 ₹
-                {(item.price * item.quantity).toLocaleString(
+                {cartTotal.toLocaleString(
                   "en-IN"
                 )}
               </strong>
             </div>
-          ))}
 
-          <div className="summary-line">
-            <span>Subtotal</span>
-            <span>₹{cartTotal.toLocaleString("en-IN")}</span>
+
+            <div>
+
+              <span>Delivery</span>
+
+              <strong className="free">
+                FREE
+              </strong>
+
+            </div>
+
+
+            <div>
+
+              <span>Discount</span>
+
+              <strong>
+                ₹0
+              </strong>
+
+            </div>
+
           </div>
 
-          <div className="summary-line">
-            <span>Delivery</span>
-            <span>FREE</span>
-          </div>
 
           <div className="summary-total">
-            <span>Total</span>
+
+            <span>Total Amount</span>
+
             <strong>
-              ₹{cartTotal.toLocaleString("en-IN")}
+              ₹
+              {cartTotal.toLocaleString(
+                "en-IN"
+              )}
             </strong>
+
           </div>
 
-          <p className="secure-text">
-            🔒 Secure checkout • Premium shopping experience
-          </p>
+
+          {/* BENEFITS */}
+
+          <div className="checkout-benefits">
+
+            <div>
+
+              <FaTruck />
+
+              <span>
+                <strong>Fast Delivery</strong>
+                <small>
+                  Dispatch within 24 hours
+                </small>
+              </span>
+
+            </div>
+
+
+            <div>
+
+              <FaShieldAlt />
+
+              <span>
+                <strong>Secure Shopping</strong>
+                <small>
+                  Your details are protected
+                </small>
+              </span>
+
+            </div>
+
+
+            <div>
+
+              <FaMoneyBillWave />
+
+              <span>
+                <strong>Easy Payment</strong>
+                <small>
+                  Multiple payment options
+                </small>
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div className="summary-trust">
+
+            <FaLock />
+
+            <span>
+              Secure Checkout •
+              Mukta Fancy Store
+            </span>
+
+          </div>
+
         </aside>
+
       </form>
+
     </main>
   );
 }
 
 export default Checkout;
-  // Your WhatsApp Number

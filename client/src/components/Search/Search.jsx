@@ -31,10 +31,26 @@ function Search({ onClose }) {
               .toLowerCase()
               .includes(search.toLowerCase())
           )
-          .slice(0, 5)
+          .slice(0, 6)
       : [];
 
-  // Close with ESC
+  /* =========================================
+     ESC KEY
+  ========================================= */
+  useEffect(() => {
+  const handlePopState = () => {
+    if (onClose) {
+      onClose();
+    }
+  };
+
+  window.addEventListener("popstate", handlePopState);
+
+  return () => {
+    window.removeEventListener("popstate", handlePopState);
+  };
+}, [onClose]);
+
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key === "Escape") {
@@ -49,7 +65,10 @@ function Search({ onClose }) {
     };
   }, [onClose]);
 
-  // Search shortcut /
+  /* =========================================
+     "/" SEARCH SHORTCUT
+  ========================================= */
+
   useEffect(() => {
     const handleSlash = (event) => {
       if (
@@ -71,59 +90,86 @@ function Search({ onClose }) {
     };
   }, []);
 
+  /* =========================================
+     PRODUCT CLICK
+  ========================================= */
+
   const handleProductClick = (id) => {
     onClose?.();
     navigate(`/product/${id}`);
   };
 
+  /* =========================================
+     POPULAR SEARCH
+  ========================================= */
+
   const handlePopularClick = (item) => {
     setSearch(item);
+  };
+
+  /* =========================================
+     BACK BUTTON
+  ========================================= */
+
+  const handleBack = () => {
+    onClose?.();
   };
 
   return (
     <div className="premium-search-overlay">
 
-      {/* Background */}
+      {/* BACKDROP */}
 
       <div
         className="premium-search-backdrop"
         onClick={onClose}
-      ></div>
+      />
 
-
-      {/* Search Panel */}
+      {/* SEARCH PANEL */}
 
       <div className="premium-search-panel">
 
-        {/* Top Header */}
+        {/* =====================================
+            HEADER
+        ===================================== */}
 
         <div className="premium-search-top">
 
           <button
+            type="button"
             className="premium-search-back"
-            onClick={onClose}
-            aria-label="Close search"
+            onClick={handleBack}
+            aria-label="Back"
           >
             <FaArrowLeft />
+            <span>BACK</span>
           </button>
 
           <div className="premium-search-brand">
-            MUKTA
-            <span>FANCY STORE</span>
+            <span className="brand-main">MUKTA</span>
+            <span className="brand-sub">
+              FANCY STORE
+            </span>
           </div>
 
-          <button
-            className="premium-search-close"
-            onClick={onClose}
-            aria-label="Close search"
-          >
-            <FaTimes />
-          </button>
-
+         <button
+  type="button"
+  className="premium-search-back"
+  onClick={() => {
+    if (onClose) {
+      onClose();
+    }
+  }}
+  aria-label="Go back"
+>
+  <FaArrowLeft />
+</button>
         </div>
 
 
-        {/* Search Box */}
+        {/* =====================================
+            SEARCH BOX
+        ===================================== */}
 
         <div className="premium-search-box">
 
@@ -140,38 +186,44 @@ function Search({ onClose }) {
 
           {search.length > 0 && (
             <button
+              type="button"
               className="premium-search-clear"
               onClick={() => setSearch("")}
+              aria-label="Clear search"
             >
               <FaTimes />
             </button>
           )}
 
-          <span className="premium-search-shortcut">
-            /
-          </span>
+          <div className="premium-search-key">
+            <kbd>/</kbd>
+          </div>
 
         </div>
 
 
-        {/* Search Content */}
+        {/* =====================================
+            CONTENT
+        ===================================== */}
 
         <div className="premium-search-content">
 
           {search.trim().length === 0 ? (
 
             <>
-              {/* Popular */}
+              {/* =================================
+                  POPULAR SEARCHES
+              ================================= */}
 
               <div className="premium-search-heading">
 
-                <span></span>
+                <div className="heading-line"></div>
 
                 <h3>
                   POPULAR SEARCHES
                 </h3>
 
-                <span></span>
+                <div className="heading-line"></div>
 
               </div>
 
@@ -181,6 +233,7 @@ function Search({ onClose }) {
                 {popularSearches.map((item) => (
 
                   <button
+                    type="button"
                     key={item}
                     onClick={() =>
                       handlePopularClick(item)
@@ -199,9 +252,13 @@ function Search({ onClose }) {
               </div>
 
 
-              {/* Premium message */}
+              {/* =================================
+                  PREMIUM MESSAGE
+              ================================= */}
 
               <div className="premium-search-message">
+
+                <span className="premium-message-line"></span>
 
                 <p className="premium-search-label">
                   MUKTA COLLECTION
@@ -210,12 +267,13 @@ function Search({ onClose }) {
                 <h2>
                   Find Your
                   <br />
-                  Perfect Style.
+                  <span>Perfect Style.</span>
                 </h2>
 
-                <p>
+                <p className="premium-search-description">
                   Discover carefully selected fashion,
-                  festive wear and everyday essentials.
+                  festive wear and everyday essentials
+                  curated for you.
                 </p>
 
               </div>
@@ -225,20 +283,38 @@ function Search({ onClose }) {
           ) : (
 
             <>
-              {/* Search Results */}
+              {/* =================================
+                  SEARCH RESULTS HEADER
+              ================================= */}
 
               <div className="premium-results-header">
 
-                <span>
-                  {filteredProducts.length}
-                </span>
+                <div>
+                  <span className="results-count">
+                    {filteredProducts.length}
+                  </span>
 
-                {filteredProducts.length === 1
-                  ? " PRODUCT FOUND"
-                  : " PRODUCTS FOUND"}
+                  <span className="results-text">
+                    {filteredProducts.length === 1
+                      ? " PRODUCT FOUND"
+                      : " PRODUCTS FOUND"}
+                  </span>
+                </div>
+
+                <button
+                  type="button"
+                  className="results-clear"
+                  onClick={() => setSearch("")}
+                >
+                  Clear
+                </button>
 
               </div>
 
+
+              {/* =================================
+                  RESULTS
+              ================================= */}
 
               {filteredProducts.length > 0 ? (
 
@@ -247,6 +323,7 @@ function Search({ onClose }) {
                   {filteredProducts.map((product) => (
 
                     <button
+                      type="button"
                       key={product.id}
                       className="premium-result-card"
                       onClick={() =>
@@ -293,9 +370,7 @@ function Search({ onClose }) {
 
 
                       <div className="premium-result-arrow">
-
                         <FaArrowRight />
-
                       </div>
 
                     </button>
@@ -308,7 +383,7 @@ function Search({ onClose }) {
 
                 <div className="premium-no-results">
 
-                  <div>
+                  <div className="no-result-icon">
                     <FaSearch />
                   </div>
 
@@ -317,9 +392,16 @@ function Search({ onClose }) {
                   </h3>
 
                   <p>
-                    Try searching for saree, kurti,
-                    jeans or shirt.
+                    Try searching for saree,
+                    kurti, jeans or shirt.
                   </p>
+
+                  <button
+                    type="button"
+                    onClick={() => setSearch("")}
+                  >
+                    EXPLORE COLLECTION
+                  </button>
 
                 </div>
 
@@ -332,33 +414,31 @@ function Search({ onClose }) {
         </div>
 
 
-        {/* Bottom */}
+        {/* =====================================
+            FOOTER
+        ===================================== */}
 
         <div className="premium-search-footer">
 
-          <span>
-            Press
+          <div>
             <kbd>ESC</kbd>
-            to close
-          </span>
+            <span>Close</span>
+          </div>
 
-          <span>
+          <div>
             <kbd>/</kbd>
-            to search
-          </span>
+            <span>Search</span>
+          </div>
 
-          <span>
+          <div className="footer-brand">
             MUKTA FANCY STORE
-          </span>
+          </div>
 
         </div>
 
       </div>
-
     </div>
   );
 }
 
 export default Search;
-
-//
