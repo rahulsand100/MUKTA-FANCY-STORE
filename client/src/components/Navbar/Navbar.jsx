@@ -1,18 +1,23 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { useWishlist } from "../../context/WishlistContext";
 import {
   FaHeart,
   FaShoppingCart,
   FaUser,
   FaSearch,
+  FaBars,
+  FaTimes,
+  FaChevronRight,
 } from "react-icons/fa";
 
+import { useWishlist } from "../../context/WishlistContext";
 import { useCart } from "../../context/CartContext";
 import Search from "../Search/Search";
 
 function Navbar() {
+  const navigate = useNavigate();
+
   const { cartCount, setIsCartOpen } = useCart();
 
   const {
@@ -20,17 +25,14 @@ function Navbar() {
     setIsWishlistOpen,
   } = useWishlist();
 
-  const navigate = useNavigate();
-
   const [isScrolled, setIsScrolled] = useState(false);
   const [showNavbar, setShowNavbar] = useState(true);
-
-  // SEARCH STATE
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  /* ==========================================
+  /* ================================
      SCROLL EFFECT
-  ========================================== */
+  ================================= */
 
   useEffect(() => {
     let lastScroll = window.scrollY;
@@ -38,7 +40,7 @@ function Navbar() {
     const handleScroll = () => {
       const currentScroll = window.scrollY;
 
-      setIsScrolled(currentScroll > 50);
+      setIsScrolled(currentScroll > 40);
 
       if (
         currentScroll > lastScroll &&
@@ -55,41 +57,80 @@ function Navbar() {
     window.addEventListener("scroll", handleScroll);
 
     return () => {
-      window.removeEventListener(
-        "scroll",
-        handleScroll
-      );
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
-  /* ==========================================
-     CATEGORY
-  ========================================== */
+  /* ================================
+     NAVIGATION
+  ================================= */
+
+  const goHome = () => {
+    setIsMobileMenuOpen(false);
+    navigate("/");
+  };
 
   const openCategory = (category) => {
+    setIsMobileMenuOpen(false);
     navigate(`/category/${category}`);
   };
 
-  /* ==========================================
-     OPEN SEARCH
-  ========================================== */
-
   const openSearch = () => {
     setIsSearchOpen(true);
+    setIsMobileMenuOpen(false);
   };
-
-  /* ==========================================
-     CLOSE SEARCH
-  ========================================== */
 
   const closeSearch = () => {
     setIsSearchOpen(false);
   };
 
+  /* ================================
+     LOCK BODY WHEN MOBILE MENU OPEN
+  ================================= */
+
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isMobileMenuOpen]);
+
+  /* ================================
+     NAV ITEMS
+  ================================= */
+
+  const navItems = [
+    {
+      label: "Home",
+      action: goHome,
+    },
+    {
+      label: "Women",
+      action: () => openCategory("women"),
+    },
+    {
+      label: "Men",
+      action: () => openCategory("men"),
+    },
+    {
+      label: "Kids",
+      action: () => openCategory("kids"),
+    },
+    {
+      label: "Gift Items",
+      action: () => openCategory("gift"),
+    },
+  ];
+
   return (
     <>
       {/* ==========================================
-          NAVBAR
+          MAIN NAVBAR
       ========================================== */}
 
       <nav
@@ -98,21 +139,20 @@ function Navbar() {
           top-0
           left-0
           w-full
-          z-50
+          z-[100]
+          bg-white
           transition-all
           duration-300
-          ease-in-out
-
+          ease-out
           ${
             showNavbar
               ? "translate-y-0"
               : "-translate-y-full"
           }
-
           ${
             isScrolled
-              ? "bg-white/95 backdrop-blur-md shadow-xl py-2"
-              : "bg-white shadow-lg py-4"
+              ? "shadow-[0_8px_30px_rgba(50,24,32,0.10)]"
+              : "shadow-[0_2px_15px_rgba(50,24,32,0.06)]"
           }
         `}
       >
@@ -123,43 +163,110 @@ function Navbar() {
 
         <div
           className="
-            bg-gradient-to-r
-            from-[#321820]
-            via-[#9b1c3f]
-            to-[#321820]
+            bg-[#321820]
             text-white
-            text-center
-            text-sm
-            py-2
-            font-medium
-            tracking-wide
+            overflow-hidden
           "
         >
-          ✨ Welcome to Mukta Fancy Store • Premium
-          Fashion • Free Shipping Above ₹1099 •
-          WhatsApp Ordering Available
+          <div
+            className="
+              max-w-7xl
+              mx-auto
+              px-4
+              sm:px-6
+              h-8
+              sm:h-9
+              flex
+              items-center
+              justify-center
+              text-[10px]
+              sm:text-xs
+              md:text-sm
+              font-medium
+              tracking-wide
+              text-center
+              whitespace-nowrap
+            "
+          >
+            ✨ Premium Fashion
+            <span className="mx-2 opacity-50">•</span>
+            Free Shipping Above ₹1099
+            <span className="mx-2 opacity-50">•</span>
+            WhatsApp Ordering Available
+          </div>
         </div>
 
-        <div className="max-w-7xl mx-auto px-6">
+        {/* ==========================================
+            MAIN HEADER
+        ========================================== */}
 
-          {/* ==========================================
-              TOP SECTION
-          ========================================== */}
+        <div
+          className={`
+            max-w-7xl
+            mx-auto
+            px-4
+            sm:px-6
+            lg:px-8
+            transition-all
+            duration-300
+            ${
+              isScrolled
+                ? "py-2"
+                : "py-3 sm:py-4"
+            }
+          `}
+        >
 
-          <div className="flex items-center justify-between gap-6">
+          <div
+            className="
+              flex
+              items-center
+              justify-between
+              gap-3
+            "
+          >
 
-            {/* ========================================
+            {/* ======================================
+                MOBILE MENU BUTTON
+            ====================================== */}
+
+            <button
+              type="button"
+              onClick={() =>
+                setIsMobileMenuOpen(true)
+              }
+              className="
+                lg:hidden
+                w-10
+                h-10
+                flex
+                items-center
+                justify-center
+                rounded-full
+                text-[#321820]
+                hover:bg-[#f8f1f2]
+                transition
+              "
+              aria-label="Open menu"
+            >
+              <FaBars className="text-lg" />
+            </button>
+
+
+            {/* ======================================
                 LOGO
-            ======================================== */}
+            ====================================== */}
 
             <div
+              onClick={goHome}
               className="
                 flex
                 items-center
-                gap-3
+                gap-2
+                sm:gap-3
                 cursor-pointer
+                min-w-0
               "
-              onClick={() => navigate("/")}
             >
 
               <img
@@ -168,31 +275,32 @@ function Navbar() {
                 className={`
                   rounded-full
                   object-cover
+                  flex-shrink-0
                   transition-all
                   duration-300
-
                   ${
                     isScrolled
-                      ? "w-10 h-10"
-                      : "w-14 h-14"
+                      ? "w-9 h-9 sm:w-10 sm:h-10"
+                      : "w-10 h-10 sm:w-12 sm:h-12"
                   }
                 `}
               />
 
-              <div>
+              <div className="min-w-0">
 
                 <h1
                   className={`
                     font-serif
-                    font-bold
+                    font-semibold
                     text-[#321820]
+                    leading-none
+                    whitespace-nowrap
                     transition-all
                     duration-300
-
                     ${
                       isScrolled
-                        ? "text-2xl"
-                        : "text-3xl"
+                        ? "text-base sm:text-lg md:text-xl"
+                        : "text-lg sm:text-xl md:text-2xl"
                     }
                   `}
                 >
@@ -201,10 +309,15 @@ function Navbar() {
 
                 <p
                   className="
-                    text-sm
-                    tracking-[3px]
+                    hidden
+                    sm:block
+                    mt-1
+                    text-[8px]
+                    md:text-[9px]
+                    tracking-[2.5px]
                     uppercase
                     text-[#9b1c3f]
+                    whitespace-nowrap
                   "
                 >
                   Premium Fashion Collection
@@ -214,9 +327,10 @@ function Navbar() {
 
             </div>
 
-            {/* ========================================
-                DESKTOP SEARCH BUTTON
-            ======================================== */}
+
+            {/* ======================================
+                DESKTOP SEARCH
+            ====================================== */}
 
             <button
               type="button"
@@ -225,267 +339,329 @@ function Navbar() {
                 hidden
                 lg:flex
                 flex-1
-                max-w-[450px]
-                h-12
+                max-w-[430px]
+                h-11
                 items-center
-                gap-4
+                gap-3
                 px-5
                 rounded-full
                 border
-                border-gray-200
-                bg-gray-50
-                text-gray-500
-                hover:border-[#9b1c3f]
+                border-[#eadfe1]
+                bg-[#faf8f8]
+                text-[#8c7d80]
                 hover:bg-white
+                hover:border-[#9b1c3f]
+                hover:shadow-sm
                 transition-all
                 duration-300
-                cursor-text
+                text-sm
               "
             >
 
               <FaSearch
                 className="
                   text-[#9b1c3f]
+                  text-base
+                  flex-shrink-0
                 "
               />
 
-              <span>
+              <span className="text-left flex-1">
                 Search sarees, kurtis, jeans...
               </span>
 
-              <span
+              <kbd
                 className="
-                  ml-auto
+                  hidden
+                  xl:block
                   px-2
                   py-1
-                  text-xs
-                  border
-                  border-gray-300
                   rounded
-                  text-gray-400
+                  border
+                  border-[#ddd2d5]
+                  bg-white
+                  text-[10px]
+                  text-[#9a8d90]
                 "
               >
                 /
-              </span>
+              </kbd>
 
             </button>
 
-            {/* ========================================
-                ICONS
-            ======================================== */}
+
+            {/* ======================================
+                RIGHT ICONS
+            ====================================== */}
 
             <div
               className="
                 flex
                 items-center
-                gap-6
+                gap-1
+                sm:gap-2
+                md:gap-3
               "
             >
 
+              {/* SEARCH MOBILE */}
+
+              <button
+                type="button"
+                onClick={openSearch}
+                className="
+                  lg:hidden
+                  w-10
+                  h-10
+                  flex
+                  items-center
+                  justify-center
+                  rounded-full
+                  text-[#321820]
+                  hover:bg-[#f8f1f2]
+                  transition
+                "
+                aria-label="Search"
+              >
+                <FaSearch className="text-lg" />
+              </button>
+
+
               {/* WISHLIST */}
 
-              <div
+              <button
+                type="button"
+                onClick={() => setIsWishlistOpen(true)}
                 className="
                   relative
-                  cursor-pointer
+                  w-10
+                  h-10
+                  flex
+                  items-center
+                  justify-center
+                  rounded-full
+                  text-[#321820]
+                  hover:bg-[#f8f1f2]
+                  transition
                 "
-                onClick={() => {
-                  console.log(
-                    "❤️ Heart clicked"
-                  );
-
-                  setIsWishlistOpen(true);
-                }}
+                aria-label="Wishlist"
               >
 
-                <FaHeart
-                  className="
-                    text-2xl
-                    hover:text-red-500
-                    hover:scale-110
-                    transition
-                  "
-                />
+                <FaHeart className="text-lg sm:text-xl" />
 
                 {wishlistCount > 0 && (
                   <span
                     className="
                       absolute
-                      -top-2
-                      -right-2
-                      bg-red-500
-                      text-white
-                      w-5
-                      h-5
+                      top-0
+                      right-0
+                      min-w-[17px]
+                      h-[17px]
+                      px-1
                       rounded-full
+                      bg-[#9b1c3f]
+                      text-white
                       flex
                       items-center
                       justify-center
-                      text-xs
+                      text-[9px]
+                      font-bold
                     "
                   >
                     {wishlistCount}
                   </span>
                 )}
 
-              </div>
+              </button>
+
 
               {/* USER */}
 
-              <FaUser
+              <button
+                type="button"
                 className="
-                  text-2xl
-                  p-2
+                  hidden
+                  sm:flex
+                  w-10
+                  h-10
+                  items-center
+                  justify-center
                   rounded-full
-                  hover:bg-[#9b1c3f]
-                  hover:text-white
-                  transition-all
-                  duration-300
-                  cursor-pointer
+                  text-[#321820]
+                  hover:bg-[#f8f1f2]
+                  transition
                 "
-              />
+                aria-label="Account"
+              >
+                <FaUser className="text-lg" />
+              </button>
+
 
               {/* CART */}
 
-              <div
+              <button
+                type="button"
+                onClick={() => setIsCartOpen(true)}
                 className="
                   relative
-                  cursor-pointer
+                  w-10
+                  h-10
+                  flex
+                  items-center
+                  justify-center
+                  rounded-full
+                  text-[#321820]
+                  hover:bg-[#f8f1f2]
+                  transition
                 "
-                onClick={() => {
-                  console.log(
-                    "🛒 Cart clicked"
-                  );
-
-                  setIsCartOpen(true);
-                }}
+                aria-label="Shopping cart"
               >
 
-                <FaShoppingCart
-                  className="
-                    text-2xl
-                    hover:text-[#9b1c3f]
-                    hover:scale-110
-                    transition
-                  "
-                />
+                <FaShoppingCart className="text-lg sm:text-xl" />
 
                 {cartCount > 0 && (
                   <span
                     className="
                       absolute
-                      -top-2
-                      -right-2
+                      top-0
+                      right-0
+                      min-w-[17px]
+                      h-[17px]
+                      px-1
+                      rounded-full
                       bg-[#9b1c3f]
                       text-white
-                      w-5
-                      h-5
-                      rounded-full
                       flex
                       items-center
                       justify-center
-                      text-xs
+                      text-[9px]
+                      font-bold
                     "
                   >
                     {cartCount}
                   </span>
                 )}
 
-              </div>
+              </button>
 
             </div>
 
           </div>
 
+
           {/* ==========================================
-              DESKTOP MENU
+              DESKTOP NAVIGATION
           ========================================== */}
 
-          <ul
+          <div
             className="
               hidden
-              md:flex
+              lg:flex
+              items-center
               justify-center
-              gap-10
-              mt-5
-              font-medium
+              mt-3
             "
           >
 
-            <li
-              onClick={() => navigate("/")}
+            <div
               className="
-                cursor-pointer
-                transition-all
-                duration-300
-                hover:text-[#9b1c3f]
-                hover:-translate-y-1
+                flex
+                items-center
+                gap-10
+                border-t
+                border-[#f0e7e9]
+                pt-3
               "
             >
-              Home
-            </li>
 
-            <li
-              onClick={() =>
-                openCategory("women")
-              }
-              className="
-                cursor-pointer
-                hover:text-[#9b1c3f]
-              "
-            >
-              Women
-            </li>
+              {navItems.map((item) => (
+                <button
+                  key={item.label}
+                  type="button"
+                  onClick={item.action}
+                  className="
+                    relative
+                    text-[13px]
+                    font-medium
+                    tracking-wide
+                    text-[#321820]
+                    hover:text-[#9b1c3f]
+                    transition-colors
+                    duration-200
+                    group
+                  "
+                >
 
-            <li
-              onClick={() =>
-                openCategory("men")
-              }
-              className="
-                cursor-pointer
-                hover:text-[#9b1c3f]
-              "
-            >
-              Men
-            </li>
+                  {item.label}
 
-            <li
-              onClick={() =>
-                openCategory("kids")
-              }
-              className="
-                cursor-pointer
-                hover:text-[#9b1c3f]
-              "
-            >
-              Kids
-            </li>
+                  <span
+                    className="
+                      absolute
+                      -bottom-1
+                      left-0
+                      w-0
+                      h-[1px]
+                      bg-[#9b1c3f]
+                      group-hover:w-full
+                      transition-all
+                      duration-300
+                    "
+                  />
 
-            <li
-              onClick={() =>
-                openCategory("gift")
-              }
-              className="
-                cursor-pointer
-                hover:text-[#9b1c3f]
-              "
-            >
-              Gift Items
-            </li>
+                </button>
+              ))}
 
-            <li
-              className="
-                cursor-pointer
-                hover:text-[#9b1c3f]
-              "
-            >
-              Contact
-            </li>
+              <button
+                type="button"
+                onClick={() => {
+                  const element =
+                    document.getElementById(
+                      "contact"
+                    );
 
-          </ul>
+                  if (element) {
+                    element.scrollIntoView({
+                      behavior: "smooth",
+                    });
+                  }
+                }}
+                className="
+                  relative
+                  text-[13px]
+                  font-medium
+                  tracking-wide
+                  text-[#321820]
+                  hover:text-[#9b1c3f]
+                  transition-colors
+                  duration-200
+                  group
+                "
+              >
+                Contact
+
+                <span
+                  className="
+                    absolute
+                    -bottom-1
+                    left-0
+                    w-0
+                    h-[1px]
+                    bg-[#9b1c3f]
+                    group-hover:w-full
+                    transition-all
+                    duration-300
+                  "
+                />
+
+              </button>
+
+            </div>
+
+          </div>
+
 
           {/* ==========================================
-              MOBILE SEARCH
+              MOBILE SEARCH PREVIEW
           ========================================== */}
 
           <button
@@ -493,26 +669,25 @@ function Navbar() {
             onClick={openSearch}
             className="
               lg:hidden
-              mt-4
+              mt-3
               w-full
-              h-12
+              h-11
               flex
               items-center
               gap-3
-              px-5
+              px-4
               rounded-full
               border
-              border-gray-200
-              bg-gray-50
-              text-gray-500
-              hover:border-[#9b1c3f]
+              border-[#eadfe1]
+              bg-[#faf8f8]
+              text-[#8c7d80]
+              text-sm
+              hover:bg-white
               transition
             "
           >
 
-            <FaSearch
-              className="text-[#9b1c3f]"
-            />
+            <FaSearch className="text-[#9b1c3f]" />
 
             <span>
               Search products...
@@ -524,16 +699,296 @@ function Navbar() {
 
       </nav>
 
+
+      {/* ==========================================
+          MOBILE MENU OVERLAY
+      ========================================== */}
+
+      {isMobileMenuOpen && (
+        <div
+          className="
+            fixed
+            inset-0
+            z-[200]
+            bg-[#321820]/40
+            backdrop-blur-sm
+            lg:hidden
+          "
+          onClick={() =>
+            setIsMobileMenuOpen(false)
+          }
+        >
+
+          <aside
+            className="
+              absolute
+              top-0
+              left-0
+              h-full
+              w-[82%]
+              max-w-[360px]
+              bg-white
+              shadow-2xl
+              animate-[slideIn_.3s_ease-out]
+            "
+            onClick={(event) =>
+              event.stopPropagation()
+            }
+          >
+
+            {/* MOBILE MENU HEADER */}
+
+            <div
+              className="
+                px-5
+                py-5
+                border-b
+                border-[#eee5e7]
+                flex
+                items-center
+                justify-between
+              "
+            >
+
+              <div>
+
+                <p
+                  className="
+                    text-[10px]
+                    tracking-[3px]
+                    uppercase
+                    text-[#9b1c3f]
+                    font-semibold
+                  "
+                >
+                  MUKTA
+                </p>
+
+                <h2
+                  className="
+                    font-serif
+                    text-xl
+                    text-[#321820]
+                  "
+                >
+                  Fancy Store
+                </h2>
+
+              </div>
+
+              <button
+                type="button"
+                onClick={() =>
+                  setIsMobileMenuOpen(false)
+                }
+                className="
+                  w-10
+                  h-10
+                  rounded-full
+                  flex
+                  items-center
+                  justify-center
+                  bg-[#f8f1f2]
+                  text-[#321820]
+                "
+                aria-label="Close menu"
+              >
+                <FaTimes />
+              </button>
+
+            </div>
+
+
+            {/* MOBILE MENU SEARCH */}
+
+            <div className="px-5 pt-5">
+
+              <button
+                type="button"
+                onClick={openSearch}
+                className="
+                  w-full
+                  h-11
+                  flex
+                  items-center
+                  gap-3
+                  px-4
+                  rounded-full
+                  bg-[#faf7f8]
+                  border
+                  border-[#eadfe1]
+                  text-[#8c7d80]
+                  text-sm
+                "
+              >
+                <FaSearch className="text-[#9b1c3f]" />
+                Search products
+              </button>
+
+            </div>
+
+
+            {/* MOBILE NAVIGATION */}
+
+            <div className="px-5 py-5">
+
+              <p
+                className="
+                  text-[10px]
+                  tracking-[3px]
+                  uppercase
+                  text-[#9b1c3f]
+                  font-semibold
+                  mb-3
+                "
+              >
+                SHOP
+              </p>
+
+              <div className="space-y-1">
+
+                {navItems.map((item) => (
+                  <button
+                    key={item.label}
+                    type="button"
+                    onClick={item.action}
+                    className="
+                      w-full
+                      flex
+                      items-center
+                      justify-between
+                      py-4
+                      border-b
+                      border-[#f0e7e9]
+                      text-left
+                      text-[#321820]
+                      text-base
+                      font-medium
+                    "
+                  >
+
+                    {item.label}
+
+                    <FaChevronRight
+                      className="
+                        text-xs
+                        text-[#9b1c3f]
+                      "
+                    />
+
+                  </button>
+                ))}
+
+              </div>
+
+
+              {/* MOBILE ACTIONS */}
+
+              <div
+                className="
+                  mt-7
+                  grid
+                  grid-cols-2
+                  gap-3
+                "
+              >
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    setIsWishlistOpen(true);
+                  }}
+                  className="
+                    p-4
+                    rounded-xl
+                    bg-[#faf7f8]
+                    border
+                    border-[#eee3e5]
+                    text-[#321820]
+                    text-sm
+                    font-medium
+                  "
+                >
+                  ♡ Wishlist
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    setIsCartOpen(true);
+                  }}
+                  className="
+                    p-4
+                    rounded-xl
+                    bg-[#faf7f8]
+                    border
+                    border-[#eee3e5]
+                    text-[#321820]
+                    text-sm
+                    font-medium
+                  "
+                >
+                  🛒 Cart
+                </button>
+
+              </div>
+
+
+              {/* MOBILE BRAND MESSAGE */}
+
+              <div
+                className="
+                  mt-8
+                  p-5
+                  rounded-2xl
+                  bg-[#321820]
+                  text-white
+                "
+              >
+
+                <p
+                  className="
+                    text-[10px]
+                    tracking-[3px]
+                    uppercase
+                    text-[#e8cfd4]
+                    mb-2
+                  "
+                >
+                  MUKTA COLLECTION
+                </p>
+
+                <h3
+                  className="
+                    font-serif
+                    text-2xl
+                    leading-tight
+                  "
+                >
+                  Style made
+                  <br />
+                  for every moment.
+                </h3>
+
+              </div>
+
+            </div>
+
+          </aside>
+
+        </div>
+      )}
+
+
       {/* ==========================================
           SEARCH OVERLAY
       ========================================== */}
 
       {isSearchOpen && (
-        <Search
-          onClose={closeSearch}
-        />
+        <Search onClose={closeSearch} />
       )}
-
     </>
   );
 }
